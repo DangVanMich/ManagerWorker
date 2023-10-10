@@ -27,13 +27,13 @@ public class WorkRepository implements IWorkerRepository{
     }
 
     @Override
-    public void upSalary() {
-        WorkerDao.Instance().UpSalary(worker, history, 1);
+    public void changeSalary1() {
+        WorkerDao.Instance().ChangeSalary(worker, history, 1);
     }
     
      @Override
-    public void downSalary() {
-        WorkerDao.Instance().DownSalary(worker, history, 2);
+    public void changeSalary2() {
+        WorkerDao.Instance().ChangeSalary(worker, history, 2);
     }
     
      @Override

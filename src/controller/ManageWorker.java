@@ -32,10 +32,10 @@ public class ManageWorker extends Menu<String> {
                 workerrepository.addWorker();
                 break;
             case 2:
-                workerrepository.upSalary();
+                workerrepository.changeSalary1();
                 break;
             case 3:
-                workerrepository.downSalary();
+                workerrepository.changeSalary2();
                 break;
             case 4:
                 workerrepository.displaySalary();

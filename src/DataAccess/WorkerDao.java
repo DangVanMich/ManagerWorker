@@ -59,7 +59,7 @@ public class WorkerDao {
     }
 
    // public void Update(ArrayList<Worker> list_worker)
-     public void UpSalary(ArrayList<Worker> lw, ArrayList<History> lh, int status) {
+     public void ChangeSalary(ArrayList<Worker> lw, ArrayList<History> lh, int status) {
         if (lw.isEmpty()) {
             System.err.println("List empty.");
             return;
@@ -88,35 +88,12 @@ public class WorkerDao {
                 lh.add(new History("UP", worker.getId(),
                         worker.getName(), worker.getAge(), salaryUpdate
                         ,worker.getWorkLocation(),getCurrentDate()));
-                 worker.setSalary(salaryUpdate);
-                }
-             //   worker.setSalary(salaryUpdate);
-        }
-         printListHistory(lh);
-           
-         System.err.println("Up Salary success");
-    }
-
-      public void DownSalary(ArrayList<Worker> lw, ArrayList<History> lh, int status) {
-        if (lw.isEmpty()) {
-            System.err.println("List empty.");
-            return;
-        }
-        String id = validation.checkInputString("Enter code: ");
-        Worker worker = getWorkerByCode(lw, id);
-        if (worker == null) {
-            System.err.println("Not exist worker.");
-        } else {
-            double salaryCurrent = worker.getSalary();
-            double salarydown;
-            //check user want to update salary          
-               // System.out.print("Enter salary: ");
-                //loop until user input salary update < salary current
-                if(status==2){
-                while (true) {
-                    salarydown = validation.checkInputSalary("Enter Salary: ");
+                 
+                }else{
+                    while (true) {
+                    salaryUpdate = validation.checkInputSalary("Enter Salary: ");
                     //check user input salary update < salary current
-                    if (salarydown >= salaryCurrent) {
+                    if (salaryUpdate >= salaryCurrent) {
                         System.err.println("Must be smaller than current salary.");
                         System.out.print("Enter again: ");
                     } else {
@@ -124,17 +101,16 @@ public class WorkerDao {
                     }
                 }
                 lh.add(new History("Down", worker.getId(),
-                        worker.getName(), worker.getAge(), salarydown
+                        worker.getName(), worker.getAge(), salaryUpdate
                         ,worker.getWorkLocation(),getCurrentDate()));
-                worker.setSalary(salarydown);
-            }
+                }
+                worker.setSalary(salaryUpdate);
+                
+                System.out.println("Update Successful!!");
         }
-         printListHistory(lh);
-            System.err.println("Down Salary success");
-        }
- 
+        
+    }
 
-     
    
     //allow user print history
     public void printListHistory(ArrayList<History> lh) {
@@ -144,7 +120,7 @@ public class WorkerDao {
         }
         System.out.printf("%-5s%-15s%-5s%-10s%-10s%-20s\n", "Code", "Name", "Age",
                 "Salary", "Status", "Date");
-        Collections.sort(lh);
+      //  Collections.sort(lh);
         //print history from first to last list
         for (History history : lh) {
             Displayinfor(history);
@@ -168,13 +144,6 @@ public class WorkerDao {
         return dateFormat.format(calendar.getTime());
     }
 
-    //print history
-//    public  void printHistory(History history) {
-//        System.out.printf("%-5s%-15s%-5d%-10d%-10s%-20s\n", history.getId(),
-//                history.getName(), history.getAge(), history.getSalary(),
-//                history.getStatus(), history.getDate());
-//    }
-//    
     public void Displayinfor(History history){
          System.out.printf("%-5s%-15s%-5d%-10d%-10s%-20s\n", history.getId(),
                 history.getName(), history.getAge(), history.getSalary(),
