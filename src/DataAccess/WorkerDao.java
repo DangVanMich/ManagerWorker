@@ -4,11 +4,7 @@
  */
 package DataAccess;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import model.History;
 import model.Worker;
@@ -22,9 +18,11 @@ public class WorkerDao {
 
     private static WorkerDao instance = null;
     private Validation validation;
+    private ArrayList<History> his_salary;
 
     public WorkerDao() {
         validation = new Validation();
+        his_salary = new ArrayList<>();
     }
 
     public static WorkerDao Instance() {
@@ -48,6 +46,7 @@ public class WorkerDao {
                 int age = validation.checkInputIntLimit(18, 50);
                 double salary = validation.checkInputSalary("Enter Salary Worker: ");
                 String worklocation = validation.checkInputString("Enter Date Work: ");
+                validation.checkInputDate(worklocation);
                 list_worker.add(new Worker(id, name, age, salary, worklocation));
                 System.err.println("Add success.");
             }
@@ -58,96 +57,95 @@ public class WorkerDao {
         }
     }
 
-   // public void Update(ArrayList<Worker> list_worker)
-     public void ChangeSalary(ArrayList<Worker> lw, ArrayList<History> lh, int status) {
-        if (lw.isEmpty()) {
+//     public void ChangeSalary(ArrayList<Worker> lw, String status) {
+//        if (lw.isEmpty()) {
+//            System.err.println("List empty.");
+//            return;
+//        }
+//        String id = validation.checkInputString("Enter code: ");
+//        Worker worker = getWorkerByCode(lw, id);
+//        if (worker == null) {
+//            System.err.println("Not exist worker.");
+//        } else {
+//            double salaryCurrent = worker.getSalary();
+//            double salaryUpdate;
+//                if(status.equalsIgnoreCase("UP")){
+//                while (true) {     
+//                    salaryUpdate = validation.checkInputSalary("Enter Salary: ");
+//                    if (salaryUpdate <= salaryCurrent) {
+//                        System.err.println("Must be greater than current salary.");
+//                        System.out.print("Enter again: ");
+//                    } else {
+//                        break;
+//                    }
+//                }
+//                lh.add(new History(worker.getId(),
+//                        worker.getName(), worker.getAge(), salaryUpdate
+//                        ,worker.getWorkLocation(),getCurrentDate()));
+//                 worker.getSalary()
+//                }else if(status.equalsIgnoreCase("DOWN"){
+//                    while (true) {
+//                    salaryUpdate = validation.checkInputSalary("Enter Salary: ");
+//                    //check user input salary update < salary current
+//                    if (salaryUpdate >= salaryCurrent) {
+//                        System.err.println("Must be smaller than current salary.");
+//                        System.out.print("Enter again: ");
+//                    } else {
+//                        break;
+//                    }
+//                }
+//                lh.add(new History("Down", worker.getId(),
+//                        worker.getName(), worker.getAge(), salaryUpdate
+//                        ,worker.getWorkLocation(),getCurrentDate()));
+//                }
+//                worker.setSalary(salaryUpdate);
+//                
+//                System.out.println("Update Successful!!");
+//        }
+//        
+//    }
+    public void ChangeSalary(ArrayList<Worker> workers, String status) {
+        if (workers.isEmpty()) {
             System.err.println("List empty.");
             return;
         }
-        String id = validation.checkInputString("Enter code: ");
-        Worker worker = getWorkerByCode(lw, id);
-        if (worker == null) {
-            System.err.println("Not exist worker.");
-        } else {
-            double salaryCurrent = worker.getSalary();
-            double salaryUpdate;
-            //check user want to update salary
-                //System.out.print("Enter salary: ");
-                //loop until user input salary update > salary current
-                if(status==1){
-                while (true) {     
-                    salaryUpdate = validation.checkInputSalary("Enter Salary: ");
-                    //check user input salary update > salary current
-                    if (salaryUpdate <= salaryCurrent) {
+        String id = validation.checkInputString("Enter ID : ");
+        validation.checkIdExist(workers, id);
+        Worker work_new = null;
+        for (Worker worker : workers) {
+            if (worker.getId().equalsIgnoreCase(id)) {
+                double salary = validation.checkInputSalary("Enter Salary : ");
+                if (status.equalsIgnoreCase("UP")) {
+                    if (salary <= worker.getSalary()) {
                         System.err.println("Must be greater than current salary.");
                         System.out.print("Enter again: ");
-                    } else {
-                        break;
+                        return;
                     }
-                }
-                lh.add(new History("UP", worker.getId(),
-                        worker.getName(), worker.getAge(), salaryUpdate
-                        ,worker.getWorkLocation(),getCurrentDate()));
-                 
-                }else{
-                    while (true) {
-                    salaryUpdate = validation.checkInputSalary("Enter Salary: ");
-                    //check user input salary update < salary current
-                    if (salaryUpdate >= salaryCurrent) {
+                    work_new = new Worker(worker.getId(), worker.getName(), worker.getAge(), (worker.getSalary() + salary), worker.getWorkLocation());
+                    worker.setSalary(work_new.getSalary());
+                } else if (status.equalsIgnoreCase("DOWN")) {
+                    if (salary >= worker.getSalary()) {
                         System.err.println("Must be smaller than current salary.");
                         System.out.print("Enter again: ");
-                    } else {
-                        break;
+                        return;
                     }
+                    work_new = new Worker(worker.getId(), worker.getName(), worker.getAge(), (worker.getSalary() - salary), worker.getWorkLocation());
+                    worker.setSalary(work_new.getSalary());
                 }
-                lh.add(new History("Down", worker.getId(),
-                        worker.getName(), worker.getAge(), salaryUpdate
-                        ,worker.getWorkLocation(),getCurrentDate()));
-                }
-                worker.setSalary(salaryUpdate);
-                
-                System.out.println("Update Successful!!");
-        }
-        
-    }
-
-   
-    //allow user print history
-    public void printListHistory(ArrayList<History> lh) {
-        if (lh.isEmpty()) {
-            System.err.println("List empty.");
-            return;
-        }
-        System.out.printf("%-5s%-15s%-5s%-10s%-10s%-20s\n", "Code", "Name", "Age",
-                "Salary", "Status", "Date");
-      //  Collections.sort(lh);
-        //print history from first to last list
-        for (History history : lh) {
-            Displayinfor(history);
-        }
-    }
-
-    //get worker by code
-    public  Worker getWorkerByCode(ArrayList<Worker> lw, String id) {
-        for (Worker worker : lw) {
-            if (id.equalsIgnoreCase(worker.getId())) {
-                return worker;
+                Date date = new Date();
+                History hs = new History(work_new, status, date);
+                his_salary.add(hs);
+                break;
             }
+              System.out.println("Change Successfull !!");
         }
-        return null;
     }
 
-    //get current date 
-    public  String getCurrentDate() {
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar calendar = Calendar.getInstance();
-        return dateFormat.format(calendar.getTime());
-    }
-
-    public void Displayinfor(History history){
-         System.out.printf("%-5s%-15s%-5d%-10d%-10s%-20s\n", history.getId(),
-                history.getName(), history.getAge(), history.getSalary(),
-                history.getStatus(), history.getDate());
+    public void displayInformationSalary() {
+        System.out.println("--------Display Information Salary--------");
+        System.out.println(String.format("%-13s%-13s%-13s%-13s%-13s%-13s", "Code", "Name", "Age", "Salary", "Status", "Date"));
+        for (History historySalary : his_salary) {
+            System.out.println(historySalary);
+        }
     }
 }
-

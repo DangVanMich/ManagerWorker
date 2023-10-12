@@ -12,9 +12,7 @@ public interface IWorkerRepository {
     
     public void addWorker();
     
-    public void changeSalary1();
-    
-    public void changeSalary2();
+    public void changeSalary(String Status);
     
     public void displaySalary();
 }

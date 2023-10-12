@@ -1,7 +1,11 @@
 package view;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 import model.Worker;
 
@@ -56,29 +60,29 @@ public class Validation {
             System.out.println("");
             try {
                 int number = sc.nextInt();
-                if(number<18 || number>50){
+                if (number < 18 || number > 50) {
                     throw new Exception("Age Invalid!!");
                 }
                 return number;
             } catch (Exception e) {
                 System.err.println("Range of Age must be 18 to 50");
-               // sc.nextLine();
+                // sc.nextLine();
             }
         }
     }
-    
+
     public double checkInputSalary(String name) {
         while (true) {
             System.out.print(name);
             try {
                 double number = Double.parseDouble(sc.nextLine().trim());
-                if(number<0){
+                if (number < 0) {
                     throw new NumberFormatException();
                 }
                 return number;
             } catch (NumberFormatException e) {
                 System.err.println("Salary must be greater than 0");
-               // sc.nextLine();
+                // sc.nextLine();
             }
         }
     }
@@ -96,19 +100,6 @@ public class Validation {
         }
     }
 
-    public boolean checkInputUpdateDelete() {
-        while (true) {
-            String result = checkInputString1();
-            if (result.equalsIgnoreCase("U")) {
-                return true;
-            } else if (result.equalsIgnoreCase("D")) {
-                return false;
-            }
-            System.err.println("Please input y/Y or n/N.");
-            System.out.println("Enter again: ");
-        }
-    }
-
     public boolean checkIdExist(ArrayList<Worker> list, String id) {
         try {
             for (Worker worker : list) {
@@ -122,19 +113,19 @@ public class Validation {
         }
         return false;
     }
-    
-    public boolean checkWorkerExist(ArrayList<Worker> lw, String id,
-            String name, int age, int salary, String workLocation) {
-        //check from first to last list worker  worker exist or not
-        for (Worker worker : lw) {
-            if (id.equalsIgnoreCase(worker.getId())
-                    && name.equalsIgnoreCase(worker.getName())
-                    && age == worker.getAge()
-                    && salary == worker.getSalary()) {
-                return false;
-            }
-        }
-        return true;
-    }
 
+    public void checkInputDate(String date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false); // Tắt chế độ linh hoạt cho việc kiểm tra định dạng
+       
+            try {
+                Date parsedDate = dateFormat.parse(date);
+                return;
+            } catch (ParseException e) {
+                System.out.println("Date invalid !!");
+                System.out.print("Try again: ");
+                
+            }
+        
+    }
 }

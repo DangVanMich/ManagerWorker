@@ -6,7 +6,6 @@ package repository;
 
 import DataAccess.WorkerDao;
 import java.util.ArrayList;
-import model.History;
 import model.Worker;
 
 /**
@@ -15,10 +14,9 @@ import model.Worker;
  */
 public class WorkRepository implements IWorkerRepository{
      private ArrayList<Worker> worker;
-     private ArrayList<History> history;
+     
     public WorkRepository(){
         worker= new ArrayList<>();
-        history = new ArrayList<>();
     }
 
      @Override
@@ -27,17 +25,12 @@ public class WorkRepository implements IWorkerRepository{
     }
 
     @Override
-    public void changeSalary1() {
-        WorkerDao.Instance().ChangeSalary(worker, history, 1);
-    }
-    
-     @Override
-    public void changeSalary2() {
-        WorkerDao.Instance().ChangeSalary(worker, history, 2);
+    public void changeSalary(String status) {
+        WorkerDao.Instance().ChangeSalary(worker,status);
     }
     
      @Override
     public void displaySalary(){
-        WorkerDao.Instance().printListHistory(history);
+        WorkerDao.Instance().displayInformationSalary();
     }
 }

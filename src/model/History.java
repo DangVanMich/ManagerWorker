@@ -1,24 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package model;
+
+import java.net.Socket;
+import java.util.Date;
 
 /**
  *
  * @author admin
  */
-public class History extends Worker implements Comparable<History>{
+public class History {
+    private Worker worker;
     private String status;
-    private String date;
+    private Date date;
 
-    public History() {
-    }
-
-    public History(String status,String Id, String Name, int Age, double Salary, String workLocation,String date) {
-        super(Id, Name, Age, Salary, workLocation);
+    public History(Worker worker, String status, Date date) {
+        this.worker = worker;
         this.status = status;
         this.date = date;
+    }
+
+    public Worker getWorker() {
+        return worker;
+    }
+
+    public void setWorker(Worker worker) {
+        this.worker = worker;
     }
 
     public String getStatus() {
@@ -29,18 +35,17 @@ public class History extends Worker implements Comparable<History>{
         this.status = status;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
-    
+
     @Override
-    public int compareTo(History t){
-        return this.getId().compareTo(t.getId());
+    public String toString() {
+        return String.format("%-13s%-13s%-13s%-13s%-13s%-13s", worker.getId(), worker.getName(), worker.getAge(), worker.getSalary(), getStatus(), ( (date.getDate()+1)+"/"+(date.getMonth()+1)+"/"+(date.getYear()+1900) ) );
     }
-    
-    
+   
 }
