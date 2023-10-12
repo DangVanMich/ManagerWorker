@@ -57,60 +57,12 @@ public class WorkerDao {
         }
     }
 
-//     public void ChangeSalary(ArrayList<Worker> lw, String status) {
-//        if (lw.isEmpty()) {
-//            System.err.println("List empty.");
-//            return;
-//        }
-//        String id = validation.checkInputString("Enter code: ");
-//        Worker worker = getWorkerByCode(lw, id);
-//        if (worker == null) {
-//            System.err.println("Not exist worker.");
-//        } else {
-//            double salaryCurrent = worker.getSalary();
-//            double salaryUpdate;
-//                if(status.equalsIgnoreCase("UP")){
-//                while (true) {     
-//                    salaryUpdate = validation.checkInputSalary("Enter Salary: ");
-//                    if (salaryUpdate <= salaryCurrent) {
-//                        System.err.println("Must be greater than current salary.");
-//                        System.out.print("Enter again: ");
-//                    } else {
-//                        break;
-//                    }
-//                }
-//                lh.add(new History(worker.getId(),
-//                        worker.getName(), worker.getAge(), salaryUpdate
-//                        ,worker.getWorkLocation(),getCurrentDate()));
-//                 worker.getSalary()
-//                }else if(status.equalsIgnoreCase("DOWN"){
-//                    while (true) {
-//                    salaryUpdate = validation.checkInputSalary("Enter Salary: ");
-//                    //check user input salary update < salary current
-//                    if (salaryUpdate >= salaryCurrent) {
-//                        System.err.println("Must be smaller than current salary.");
-//                        System.out.print("Enter again: ");
-//                    } else {
-//                        break;
-//                    }
-//                }
-//                lh.add(new History("Down", worker.getId(),
-//                        worker.getName(), worker.getAge(), salaryUpdate
-//                        ,worker.getWorkLocation(),getCurrentDate()));
-//                }
-//                worker.setSalary(salaryUpdate);
-//                
-//                System.out.println("Update Successful!!");
-//        }
-//        
-//    }
     public void ChangeSalary(ArrayList<Worker> workers, String status) {
         if (workers.isEmpty()) {
             System.err.println("List empty.");
             return;
         }
         String id = validation.checkInputString("Enter ID : ");
-        validation.checkIdExist(workers, id);
         Worker work_new = null;
         for (Worker worker : workers) {
             if (worker.getId().equalsIgnoreCase(id)) {

@@ -123,8 +123,7 @@ public class Validation {
                 return;
             } catch (ParseException e) {
                 System.out.println("Date invalid !!");
-                System.out.print("Try again: ");
-                
+                System.out.print("Try again: ");      
             }
         
     }
